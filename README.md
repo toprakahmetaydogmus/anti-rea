@@ -20,7 +20,7 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 
 ---
 
-## 16-Tier Impregnable Defense Matrix
+## 20-Tier Impregnable Defense Matrix
 
 | Tier | Defense Layer | Neutralized Vector |
 | :--- | :--- | :--- |
@@ -40,6 +40,10 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 | **Tier 14** | **Anti-Decompiler Bytecode Trap** | Injects CFG recursion cycles that trigger fatal crashes in `pycdc` and `uncompyle6`. |
 | **Tier 15** | **Cognitive Jailbreak Decoy** | Feeds uncensored LLMs booby-trapped canary algorithms that satisfy jailbreak queries. |
 | **Tier 16** | **Anti-Agent Sandbox Guard** | Silently diverts agent execution to decoy states without throwing detectable errors. |
+| **Tier 17** | **Algebraic Identity & MBA Mutation** | Rewrites arithmetic into Mixed Boolean-Arithmetic identities to shatter symbolic analysis. |
+| **Tier 18** | **In-Memory Code Integrity Attestation** | Hashes function bytecodes to detect and silently neutralize Frida hooks and debuggers. |
+| **Tier 19** | **Adversarial BPE Token Disrupter** | Injects zero-width variation selectors to force tokenizers into single-byte fallback. |
+| **Tier 20** | **Native Machine Code Compiler Bridge** | Compiles critical functions to stripped C extensions with zero Python bytecode. |
 
 ---
 
@@ -49,7 +53,7 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 # Install via pip
 pip install anti-rea
 
-# Protect a Python source file or project with the full 16-Tier Matrix
+# Protect a Python source file or project with the full 20-Tier Matrix
 anti-rea protect my_script.py --output protected_script.py
 
 # Shield a compiled PyInstaller executable against pyinstxtractor
@@ -64,3 +68,4 @@ anti-rea audit dist/my_app.exe
 ## Developed by Siber Akademi
 Developer: **Toprak Ahmet Aydoğmuş**  
 Core integration inside [T-Zero Context Architect](https://github.com/toprakahmetaydogmus/TZeroAlgorithm).
+Repository: [https://github.com/toprakahmetaydogmus/anti-rea](https://github.com/toprakahmetaydogmus/anti-rea)
