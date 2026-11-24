@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "anti-rea"
-version = "1.0.0"
-description = "Military-grade defense engine against AI-driven automated reverse engineering (Anti-REA)."
+version = "4.0.0"
+description = "Military-grade defense engine against AI-driven automated reverse engineering, x64dbg, and jailbroken LLMs."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
     { name = "Toprak Ahmet Aydoğmuş", email = "siberakademi@org.tr" }
 ]
-keywords = ["security", "reverse-engineering", "anti-rea", "llm-defense", "ast-obfuscation", "ai-guard"]
+keywords = ["security", "reverse-engineering", "anti-rea", "anti-debugger", "x64dbg", "llm-defense", "ast-obfuscation", "ai-guard"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -28,6 +28,7 @@ classifiers = [
 
 [project.scripts]
 anti-rea = "anti_rea.cli:main"
+anti-rea-gui = "anti_rea.gui:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

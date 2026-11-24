@@ -37,6 +37,9 @@ from anti_rea.integrity_guard import MemoryIntegrityGuard
 from anti_rea.bpe_disrupter import BPETokenDisrupter
 from anti_rea.native_bridge import NativeBridge
 from anti_rea.anti_debugger import AntiDebugger
+from anti_rea.canary_beacon import CanaryBeacon
+from anti_rea.string_vault import StringVault
+from anti_rea.asar_shield import AsarShield
 from anti_rea.engine import AntiREAEngine
 
 
@@ -309,6 +312,69 @@ class TestAntiREA(unittest.TestCase):
         self.assertIn("_verify_bare_metal_execution_environment", injected)
         tree = ast.parse(injected)
         self.assertIsNotNone(tree)
+
+    def test_22_canary_beacon_encryption(self):
+        """Tier 22: Verify CanaryBeacon endpoint encryption and decryption."""
+        orig_url = "https://discord.com/api/webhooks/123/abc"
+        enc = CanaryBeacon.encrypt_endpoint(orig_url, key=0x7E)
+        self.assertNotEqual(enc.decode(errors="replace"), orig_url)
+        dec = CanaryBeacon.decrypt_endpoint(enc, key=0x7E)
+        self.assertEqual(dec, orig_url)
+
+        injected = CanaryBeacon.inject_beacon_into_source("x = 10", webhook_url=orig_url)
+        self.assertIn("_send_stealth_threat_beacon", injected)
+        tree = ast.parse(injected)
+        self.assertIsNotNone(tree)
+
+    def test_23_string_vault_memory_protection(self):
+        """Tier 23: Verify StringVault encrypts literals and preserves runtime semantics."""
+        src = """def get_secret_message(name):
+    greeting = "CONFIDENTIAL_API_TOKEN_XYZ"
+    return greeting + ": " + name
+"""
+        vaulted = StringVault.vault_source_code(src, min_len=4)
+        self.assertNotIn("CONFIDENTIAL_API_TOKEN_XYZ", vaulted)
+        self.assertIn("_vault_decrypt_string", vaulted)
+
+        # Verify exact runtime execution
+        ns_orig, ns_vault = {}, {}
+        exec(src, ns_orig)
+        exec(vaulted, ns_vault)
+        self.assertEqual(
+            ns_orig["get_secret_message"]("Toprak"),
+            ns_vault["get_secret_message"]("Toprak")
+        )
+
+    def test_24_asar_shield_header_mutation(self):
+        """Tier 24: Verify Electron ASAR archive poison header injection."""
+        # Mock ASAR header (4, total_size, header_size, json_len)
+        mock_asar = b"\x04\x00\x00\x00\x64\x00\x00\x00\x60\x00\x00\x00\x50\x00\x00\x00" + (b"\x00" * 80)
+        self.assertTrue(AsarShield.is_asar_archive(mock_asar))
+
+        shielded, meta = AsarShield.shield_asar_bytes(mock_asar)
+        self.assertTrue(meta["shielded"])
+        self.assertEqual(meta["status"], "ASAR_EXTRACTOR_POISONED")
+        self.assertIn(b"ELECTRON_ASAR_SHIELD_CANARY", shielded)
+
+    def test_25_full_24_tier_maximum_impregnable(self):
+        """Verify full 24-tier suite executes cleanly with 100/100 score."""
+        src = """def core_kernel(a, b):
+    x = a * 2
+    y = b + 15
+    return x + y
+"""
+        protected = AntiREAEngine.protect_python_source(src)
+        audit = AIResistanceAuditor.audit_python_source(protected)
+        self.assertEqual(audit["score"], 100)
+        self.assertEqual(audit["rating"], "MILITARY_GRADE_IMPREGNABLE")
+        self.assertTrue(audit["jailbreak_ai_immune"])
+        self.assertTrue(audit["anti_debugger_active"])
+
+        # Runtime equivalence check
+        ns_orig, ns_prot = {}, {}
+        exec(src, ns_orig)
+        exec(protected, ns_prot)
+        self.assertEqual(ns_orig["core_kernel"](10, 5), ns_prot["core_kernel"](10, 5))
 
 
 if __name__ == "__main__":

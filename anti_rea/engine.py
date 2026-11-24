@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Master Anti-REA Engine.
 
-Unified coordinator applying the 21-Tier Anti-REA Armor Matrix across
-source files, packages, and compiled executables.
+Unified coordinator applying the 24-Tier Anti-REA Armor Matrix across
+source files, packages, compiled executables, and Electron archives.
 
 Developer: Toprak Ahmet Aydoğmuş (Siber Akademi)
 Part of Siber Akademi T-Zero Security Suite.
@@ -31,6 +31,9 @@ from .integrity_guard import MemoryIntegrityGuard
 from .bpe_disrupter import BPETokenDisrupter
 from .native_bridge import NativeBridge
 from .anti_debugger import AntiDebugger
+from .canary_beacon import CanaryBeacon
+from .string_vault import StringVault
+from .asar_shield import AsarShield
 
 
 class AntiREAEngine:
@@ -56,9 +59,11 @@ class AntiREAEngine:
         integrity_guard: bool = True,
         bpe_disrupt: bool = True,
         anti_debugger: bool = True,
+        string_vault: bool = True,
+        webhook_canary: Optional[str] = None,
         seed: int = 42,
     ) -> str:
-        """Applies comprehensive 21-tier Anti-REA protection passes to Python source code."""
+        """Applies comprehensive 24-tier Anti-REA protection passes to Python source code."""
         code = source_code
 
         # 1. Algebraic Identity Mutation (Mixed Boolean-Arithmetic)
@@ -69,59 +74,67 @@ class AntiREAEngine:
         if flatten:
             code = ControlFlowFlattener.flatten_source_code(code, seed=seed)
 
-        # 3. Homoglyph Tokenizer Desynchronization
+        # 3. In-Flight String Vault (Memory Dump & String Erasure)
+        if string_vault:
+            code = StringVault.vault_source_code(code, seed=seed)
+
+        # 4. Homoglyph Tokenizer Desynchronization
         if homoglyphs:
             code = HomoglyphDesynchronizer.desynchronize_source(code, seed=seed)
 
-        # 4. Decompiler Crash Barrier
+        # 5. Decompiler Crash Barrier
         if decompiler_trap:
             code = BytecodeTrap.inject_decompiler_crash_constructs(code, seed=seed)
 
-        # 5. In-Memory Code Integrity Attestation
+        # 6. In-Memory Code Integrity Attestation
         if integrity_guard:
             code = MemoryIntegrityGuard.inject_integrity_check_code(code)
 
-        # 6. Native Anti-Debugger Gate (x64dbg, IDA Pro, WinDbg)
+        # 7. Native Anti-Debugger Gate (x64dbg, IDA Pro, WinDbg)
         if anti_debugger:
             code = AntiDebugger.inject_anti_debugger_into_source(code)
 
-        # 7. Anti-Agent Sandbox & Emulation Guard
+        # 8. Stealth Threat Canary Beacon
+        if webhook_canary:
+            code = CanaryBeacon.inject_beacon_into_source(code, webhook_url=webhook_canary)
+
+        # 9. Anti-Agent Sandbox & Emulation Guard
         if anti_agent_guard:
             code = AntiAgentGuard.inject_guard_into_source(code)
 
-        # 8. Timing Guard
+        # 10. Timing Guard
         if timing_guard:
             code = TimingGuard.inject_timing_check_into_source(code)
 
-        # 9. Sybil Mesh
+        # 11. Sybil Mesh
         if sybil_mesh:
             code = SybilNetworkGenerator.inject_sybil_mesh(code, node_count=4, seed=seed)
 
-        # 10. Cognitive Jailbreak Decoy
+        # 12. Cognitive Jailbreak Decoy
         if jailbreak_decoy:
             code = CognitiveJailbreakDecoy.inject_decoy_into_source(code, seed=seed)
 
-        # 11. Token Chaff
+        # 13. Token Chaff
         if token_chaff:
             code = TokenBombGenerator.inject_chaff_into_source(code, count=3, seed=seed)
 
-        # 12. Honeypot Decoy
+        # 14. Honeypot Decoy
         if honeypot:
             code = HoneypotGenerator.inject_honeypot_into_source(code)
 
-        # 13. MCP Protocol Poison
+        # 15. MCP Protocol Poison
         if mcp_poison:
             code = MCPProtocolPoisoner.inject_mcp_poison_constant(code)
 
-        # 14. Dynamic PolyVM Bytecode Container
+        # 16. Dynamic PolyVM Bytecode Container
         if vm_container:
             code = DynamicVMObfuscator.protect_source_with_vm(code, seed=seed)
 
-        # 15. BPE Token Collision Disruptor
+        # 17. BPE Token Collision Disruptor
         if bpe_disrupt:
             code = BPETokenDisrupter.inject_bpe_bomb_comment(code, length=50, seed=seed)
 
-        # 16. Adversarial Prompt Injection Traps (in header)
+        # 18. Adversarial Prompt Injection Traps (in header)
         if prompt_traps:
             code = AdversarialTrapGenerator.inject_python_docstring_trap(code)
 
@@ -134,11 +147,15 @@ class AntiREAEngine:
         output_path: Optional[str] = None,
         **options: Any
     ) -> Dict[str, Any]:
-        """Protects a Python source file or compiled executable on disk."""
+        """Protects a Python source file, compiled executable, or Electron archive on disk."""
         if not os.path.isfile(file_path):
             return {"success": False, "error": f"File not found: {file_path}"}
 
         out = output_path or file_path
+
+        # If it's an Electron .asar archive, apply AsarShield
+        if file_path.lower().endswith(".asar"):
+            return AsarShield.shield_asar_file(file_path, output_path=out)
 
         # If it's a binary executable, apply ExtractorShield
         if file_path.lower().endswith((".exe", ".bin", ".elf", ".so", ".pyd")):

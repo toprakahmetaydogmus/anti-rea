@@ -1,0 +1,59 @@
+name: "Anti-REA Defense Armor Action"
+description: "Military-Grade Defense Action Protecting Codebases and Binaries Against AI-Driven Reverse Engineering"
+author: "Toprak Ahmet Aydogmus"
+
+inputs:
+  path:
+    description: "Path to Python source file, directory, or compiled .exe binary to protect"
+    required: true
+  mode:
+    description: "Protection mode: 'protect', 'shield-exe', or 'audit'"
+    required: false
+    default: "protect"
+  output:
+    description: "Optional destination output path"
+    required: false
+    default: ""
+
+outputs:
+  resistance_score:
+    description: "Calculated AI Resistance Score (0-100)"
+    value: ${{ steps.armor_step.outputs.score }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Anti-REA Engine
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install "${{ github.action_path }}"
+
+    - name: Execute Anti-REA Armor
+      id: armor_step
+      shell: bash
+      run: |
+        TARGET="${{ inputs.path }}"
+        MODE="${{ inputs.mode }}"
+        OUT="${{ inputs.output }}"
+        
+        if [ "$MODE" = "protect" ]; then
+          if [ -n "$OUT" ]; then
+            anti-rea protect "$TARGET" -o "$OUT"
+          else
+            anti-rea protect "$TARGET"
+          fi
+        elif [ "$MODE" = "shield-exe" ]; then
+          if [ -n "$OUT" ]; then
+            anti-rea shield-exe "$TARGET" -o "$OUT"
+          else
+            anti-rea shield-exe "$TARGET"
+          fi
+        elif [ "$MODE" = "audit" ]; then
+          anti-rea audit "$TARGET"
+        fi
