@@ -20,7 +20,7 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 
 ---
 
-## 24-Tier Impregnable Defense Matrix
+## 26-Tier Impregnable Defense Matrix
 
 | Tier | Defense Layer | Neutralized Vector |
 | :--- | :--- | :--- |
@@ -48,6 +48,8 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 | **Tier 22** | **Stealth Threat Canary Beacon** | Asynchronously dispatches security incident pings to Webhooks, Telegram, or DNS pings. |
 | **Tier 23** | **In-Flight String Vault & Anti-Dump** | Replaces static strings with dynamic in-flight decryption and immediate RAM zeroization. |
 | **Tier 24** | **Electron asar Archive Shield** | Injects poisoned TOC lengths and canary traps crashing `npx asar extract`. |
+| **Tier 25** | **Anti-VM & Hypervisor Filter** | Detects VMware, VirtualBox, and QEMU drivers, services, and hypervisor signatures. |
+| **Tier 26** | **RDTSC Hardware Stepping Guard** | Detects single-stepping (F7/F8) via CPU instruction cycle timing variance (>50ms). |
 
 ---
 

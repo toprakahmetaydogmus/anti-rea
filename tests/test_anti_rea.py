@@ -40,6 +40,8 @@ from anti_rea.anti_debugger import AntiDebugger
 from anti_rea.canary_beacon import CanaryBeacon
 from anti_rea.string_vault import StringVault
 from anti_rea.asar_shield import AsarShield
+from anti_rea.anti_vm import AntiVMGuard
+from anti_rea.rdtsc_guard import RDTSCTimingGuard
 from anti_rea.engine import AntiREAEngine
 
 
@@ -375,6 +377,32 @@ class TestAntiREA(unittest.TestCase):
         exec(src, ns_orig)
         exec(protected, ns_prot)
         self.assertEqual(ns_orig["core_kernel"](10, 5), ns_prot["core_kernel"](10, 5))
+
+    def test_26_anti_vm_guard(self):
+        """Tier 25: Verify Anti-VM hardware and hypervisor check."""
+        report = AntiVMGuard.check_hypervisor_artifacts()
+        self.assertIn("status", report)
+        self.assertIn("is_vm", report)
+
+        guard_code = AntiVMGuard.generate_guard_code(hard_kill=False)
+        self.assertIn("_verify_bare_metal_hardware", guard_code)
+        tree = ast.parse(guard_code)
+        self.assertIsNotNone(tree)
+
+    def test_27_rdtsc_timing_guard(self):
+        """Tier 26: Verify RDTSC single-stepping cycle delta measurement."""
+        def quick_add(a, b):
+            return a + b
+
+        res = RDTSCTimingGuard.measure_block_timing(quick_add, 10, 20)
+        self.assertEqual(res["result"], 30)
+        self.assertFalse(res["stepping_detected"])
+        self.assertGreaterEqual(res["delta_ns"], 0)
+
+        guard_code = RDTSCTimingGuard.generate_stepping_check_code()
+        self.assertIn("_rdtsc_checkpoint", guard_code)
+        tree = ast.parse(guard_code)
+        self.assertIsNotNone(tree)
 
 
 if __name__ == "__main__":

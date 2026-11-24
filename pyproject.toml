@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "anti-rea"
-version = "4.0.0"
-description = "Military-grade defense engine against AI-driven automated reverse engineering, x64dbg, and jailbroken LLMs."
+version = "4.1.0"
+description = "Military-grade 26-tier defense engine against AI-driven automated reverse engineering, x64dbg, hypervisors, and jailbroken LLMs."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

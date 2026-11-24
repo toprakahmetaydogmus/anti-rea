@@ -1,6 +1,9 @@
 name: "Anti-REA Defense Armor Action"
 description: "Military-Grade Defense Action Protecting Codebases and Binaries Against AI-Driven Reverse Engineering"
 author: "Toprak Ahmet Aydogmus"
+branding:
+  icon: "shield"
+  color: "blue"
 
 inputs:
   path:
