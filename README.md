@@ -20,7 +20,7 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 
 ---
 
-## 20-Tier Impregnable Defense Matrix
+## 21-Tier Impregnable Defense Matrix
 
 | Tier | Defense Layer | Neutralized Vector |
 | :--- | :--- | :--- |
@@ -44,6 +44,7 @@ When an adversary pairs REA with a **jailbroken or uncensored AI**, standard pro
 | **Tier 18** | **In-Memory Code Integrity Attestation** | Hashes function bytecodes to detect and silently neutralize Frida hooks and debuggers. |
 | **Tier 19** | **Adversarial BPE Token Disrupter** | Injects zero-width variation selectors to force tokenizers into single-byte fallback. |
 | **Tier 20** | **Native Machine Code Compiler Bridge** | Compiles critical functions to stripped C extensions with zero Python bytecode. |
+| **Tier 21** | **Native Anti-Debugger Gate (x64dbg/IDA)** | Detects and kills execution under x64dbg, IDA Pro, WinDbg, Cheat Engine via Win32 API & NtSetInformationThread. |
 
 ---
 

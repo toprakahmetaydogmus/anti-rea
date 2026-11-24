@@ -75,7 +75,7 @@ def _anti_decompiler_guard_gate_0x9F():
     def audit_decompiler_resistance(cls, source_code: str) -> Dict[str, Any]:
         """Audits source code for the presence of decompiler crash barriers."""
         has_gate = "_anti_decompiler_guard_gate" in source_code
-        has_cfg_trap = "yield from" in source_code and "finally:" in source_code
+        has_cfg_trap = "yield from" in source_code and ("except" in source_code or "finally" in source_code)
 
         return {
             "has_decompiler_guard_gate": has_gate,

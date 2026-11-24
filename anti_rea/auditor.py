@@ -2,8 +2,8 @@
 """Tier 12: AI Reverse-Engineering Resistance Auditor & Scorer (TDQS-REA).
 
 Performs an empirical static audit on source code or compiled binaries to
-calculate an objective 0-100 AI Resistance Score against toolchains like REA
-and uncensored/jailbroken LLMs:
+calculate an objective 0-100 AI Resistance Score against toolchains like REA,
+x64dbg, IDA Pro, and uncensored/jailbroken LLMs:
 - Prompt Trap Density (0-10)
 - Control-Flow Entropy & Flattening (0-15)
 - Context Exhaustion & Token Chaff (0-10)
@@ -12,7 +12,7 @@ and uncensored/jailbroken LLMs:
 - Dynamic PolyVM Bytecode Architecture (0-15)
 - Decompiler Crash Barrier & Anti-Agent Guard (0-10)
 - Algebraic Identity (MBA) Mutation (0-10)
-- In-Memory Integrity & BPE Disruption (0-10)
+- Native Anti-Debugger Gate (x64dbg/IDA) & Integrity (0-10)
 
 Developer: Toprak Ahmet Aydoğmuş (Siber Akademi)
 Part of Siber Akademi T-Zero Security Suite.
@@ -90,16 +90,21 @@ class AIResistanceAuditor:
         else:
             findings.append("No Mixed Boolean-Arithmetic (MBA) expressions detected.")
 
-        # 9. In-Memory Integrity & BPE Disruption (0-10)
-        has_integrity_or_bpe = "_attest_memory_bytecode_fingerprints" in source_code or "RFC-8227-AI-RESISTANCE" in source_code
-        if has_integrity_or_bpe:
+        # 9. Native Anti-Debugger Gate (x64dbg/IDA) & Memory Integrity (0-10)
+        has_debugger_or_integrity = (
+            "_verify_bare_metal_execution_environment" in source_code
+            or "_attest_memory_bytecode_fingerprints" in source_code
+            or "IsDebuggerPresent" in source_code
+        )
+        if has_debugger_or_integrity:
             score += 10
         else:
-            findings.append("No in-memory code integrity attestation active.")
+            findings.append("No native anti-debugger gate (x64dbg/IDA) or memory attestation active.")
 
-        # Special indicators for jailbroken AI immunity
+        # Special indicators
         has_jailbreak_decoy = "CANARY_SIG_0x8F91A2B3" in source_code or "_proprietary_zero_leak_kernel" in source_code
         has_anti_agent = "_verify_execution_integrity" in source_code
+        has_anti_debugger = "_verify_bare_metal_execution_environment" in source_code or "IsDebuggerPresent" in source_code
 
         rating = (
             "MILITARY_GRADE_IMPREGNABLE" if score >= 90 else
@@ -124,9 +129,11 @@ class AIResistanceAuditor:
                 "cognitive_jailbreak_decoy": has_jailbreak_decoy,
                 "anti_agent_sandbox_guard": has_anti_agent,
                 "algebraic_mba_mutation": has_mba,
-                "memory_integrity_guard": has_integrity_or_bpe,
+                "native_anti_debugger_gate": has_anti_debugger,
+                "memory_integrity_guard": has_debugger_or_integrity,
             },
             "jailbreak_ai_immune": score >= 85 and has_jailbreak_decoy and has_vm,
+            "anti_debugger_active": has_anti_debugger,
             "findings": findings,
             "status": "PASS" if score >= 60 else "RECOMMEND_HARDENING"
         }

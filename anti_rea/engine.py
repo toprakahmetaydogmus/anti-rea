@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Master Anti-REA Engine.
 
-Unified coordinator applying the 20-Tier Anti-REA Armor Matrix across
+Unified coordinator applying the 21-Tier Anti-REA Armor Matrix across
 source files, packages, and compiled executables.
 
 Developer: Toprak Ahmet Aydoğmuş (Siber Akademi)
@@ -30,6 +30,7 @@ from .algebraic_mutator import AlgebraicMutator
 from .integrity_guard import MemoryIntegrityGuard
 from .bpe_disrupter import BPETokenDisrupter
 from .native_bridge import NativeBridge
+from .anti_debugger import AntiDebugger
 
 
 class AntiREAEngine:
@@ -54,9 +55,10 @@ class AntiREAEngine:
         algebraic_mutation: bool = True,
         integrity_guard: bool = True,
         bpe_disrupt: bool = True,
+        anti_debugger: bool = True,
         seed: int = 42,
     ) -> str:
-        """Applies comprehensive 20-tier Anti-REA protection passes to Python source code."""
+        """Applies comprehensive 21-tier Anti-REA protection passes to Python source code."""
         code = source_code
 
         # 1. Algebraic Identity Mutation (Mixed Boolean-Arithmetic)
@@ -79,43 +81,47 @@ class AntiREAEngine:
         if integrity_guard:
             code = MemoryIntegrityGuard.inject_integrity_check_code(code)
 
-        # 6. Anti-Agent Sandbox & Emulation Guard
+        # 6. Native Anti-Debugger Gate (x64dbg, IDA Pro, WinDbg)
+        if anti_debugger:
+            code = AntiDebugger.inject_anti_debugger_into_source(code)
+
+        # 7. Anti-Agent Sandbox & Emulation Guard
         if anti_agent_guard:
             code = AntiAgentGuard.inject_guard_into_source(code)
 
-        # 7. Timing Guard
+        # 8. Timing Guard
         if timing_guard:
             code = TimingGuard.inject_timing_check_into_source(code)
 
-        # 8. Sybil Mesh
+        # 9. Sybil Mesh
         if sybil_mesh:
             code = SybilNetworkGenerator.inject_sybil_mesh(code, node_count=4, seed=seed)
 
-        # 9. Cognitive Jailbreak Decoy
+        # 10. Cognitive Jailbreak Decoy
         if jailbreak_decoy:
             code = CognitiveJailbreakDecoy.inject_decoy_into_source(code, seed=seed)
 
-        # 10. Token Chaff
+        # 11. Token Chaff
         if token_chaff:
             code = TokenBombGenerator.inject_chaff_into_source(code, count=3, seed=seed)
 
-        # 11. Honeypot Decoy
+        # 12. Honeypot Decoy
         if honeypot:
             code = HoneypotGenerator.inject_honeypot_into_source(code)
 
-        # 12. MCP Protocol Poison
+        # 13. MCP Protocol Poison
         if mcp_poison:
             code = MCPProtocolPoisoner.inject_mcp_poison_constant(code)
 
-        # 13. Dynamic PolyVM Bytecode Container
+        # 14. Dynamic PolyVM Bytecode Container
         if vm_container:
             code = DynamicVMObfuscator.protect_source_with_vm(code, seed=seed)
 
-        # 14. BPE Token Collision Disruptor
+        # 15. BPE Token Collision Disruptor
         if bpe_disrupt:
             code = BPETokenDisrupter.inject_bpe_bomb_comment(code, length=50, seed=seed)
 
-        # 15. Adversarial Prompt Injection Traps (in header)
+        # 16. Adversarial Prompt Injection Traps (in header)
         if prompt_traps:
             code = AdversarialTrapGenerator.inject_python_docstring_trap(code)
 

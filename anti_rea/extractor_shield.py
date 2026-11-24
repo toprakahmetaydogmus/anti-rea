@@ -60,8 +60,8 @@ class ExtractorShield:
             
             # If there's an all-zero null padding region, insert decoy corrupted cookie
             zero_idx = padding_chunk.find(b"\x00" * 32)
-            if zero_idx != -1:
-                decoy_offset = padding_start + zero_idx
+            decoy_offset = padding_start + zero_idx if zero_idx != -1 else (padding_start if len(padding_chunk) >= 32 else -1)
+            if decoy_offset != -1:
                 # Write decoy cookie
                 data_array[decoy_offset:decoy_offset + PYINSTALLER_COOKIE_LEN] = PYINSTALLER_COOKIE
                 # Write a corrupted TOC length (0xFFFFFFFF) and negative package count immediately following

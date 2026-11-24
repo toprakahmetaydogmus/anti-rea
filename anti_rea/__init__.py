@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-"""Anti-REA: Military-Grade AI Reverse Engineering Defense Engine.
+"""Anti-REA: Military-Grade AI Reverse Engineering & Anti-Debugger Defense Engine.
 
-World-class, 20-tier anti-reverse-engineering defense matrix against autonomous
+World-class, 21-tier anti-reverse-engineering defense matrix against autonomous
 AI agents (morluto/rea, Ghidra MCP, pyinstxtractor, IDA LLM) and uncensored/jailbroken LLMs.
+Includes native Ring-3 anti-debugging against x64dbg, IDA Pro, WinDbg, and Cheat Engine.
 
 Developer: Toprak Ahmet Aydoğmuş (Siber Akademi)
 Part of Siber Akademi T-Zero Security Suite.
 License: MIT
 """
 
-__version__ = "3.0.0"
+__version__ = "4.0.0"
 __author__ = "Toprak Ahmet Aydoğmuş"
 __license__ = "MIT"
 
@@ -32,6 +33,7 @@ from .algebraic_mutator import AlgebraicMutator
 from .integrity_guard import MemoryIntegrityGuard
 from .bpe_disrupter import BPETokenDisrupter
 from .native_bridge import NativeBridge
+from .anti_debugger import AntiDebugger
 
 __all__ = [
     "AntiREAEngine",
@@ -53,4 +55,5 @@ __all__ = [
     "MemoryIntegrityGuard",
     "BPETokenDisrupter",
     "NativeBridge",
+    "AntiDebugger",
 ]

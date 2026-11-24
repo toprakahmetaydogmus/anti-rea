@@ -36,6 +36,7 @@ from anti_rea.algebraic_mutator import AlgebraicMutator
 from anti_rea.integrity_guard import MemoryIntegrityGuard
 from anti_rea.bpe_disrupter import BPETokenDisrupter
 from anti_rea.native_bridge import NativeBridge
+from anti_rea.anti_debugger import AntiDebugger
 from anti_rea.engine import AntiREAEngine
 
 
@@ -283,8 +284,8 @@ class TestAntiREA(unittest.TestCase):
         audit = NativeBridge.audit_native_coverage(str(PACKAGE_ROOT))
         self.assertIn("status", audit)
 
-    def test_20_full_20_tier_matrix_maximum_score(self):
-        """Verify full 20-tier suite scores 100/100 MILITARY_GRADE_IMPREGNABLE."""
+    def test_20_full_21_tier_matrix_maximum_score(self):
+        """Verify full 21-tier suite scores 100/100 MILITARY_GRADE_IMPREGNABLE."""
         src = """def enterprise_kernel(val):
     a = val + 10
     b = val * 2
@@ -296,7 +297,18 @@ class TestAntiREA(unittest.TestCase):
         self.assertEqual(audit["rating"], "MILITARY_GRADE_IMPREGNABLE")
         self.assertTrue(audit["jailbreak_ai_immune"])
         self.assertTrue(audit["defenses_active"]["algebraic_mba_mutation"])
-        self.assertTrue(audit["defenses_active"]["memory_integrity_guard"])
+        self.assertTrue(audit["defenses_active"]["native_anti_debugger_gate"])
+
+    def test_21_anti_debugger_process_and_api_checks(self):
+        """Tier 21: Verify AntiDebugger process scanning and injected gate."""
+        scan = AntiDebugger.scan_debugger_environment()
+        self.assertIn("debugger_detected", scan)
+        self.assertIn("status", scan)
+
+        injected = AntiDebugger.inject_anti_debugger_into_source("x = 42")
+        self.assertIn("_verify_bare_metal_execution_environment", injected)
+        tree = ast.parse(injected)
+        self.assertIsNotNone(tree)
 
 
 if __name__ == "__main__":
