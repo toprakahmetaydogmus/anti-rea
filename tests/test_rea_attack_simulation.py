@@ -52,8 +52,8 @@ def calculate_financial_secret(balance, rate, days):
         """ATTACK 1: REA runs pyinstxtractor on compiled application.
         Target: Must fail to parse TOC and encounter multiple decoy cookies.
         """
-        # Create mock executable binary containing PyInstaller cookie
-        clean_binary = b"MZ\x90\x00" + (b"\xAA" * 500) + PYINSTALLER_COOKIE + b"\x00\x00\x00\x30"
+        # Create mock executable binary containing null alignment cave and PyInstaller cookie
+        clean_binary = b"MZ\x90\x00" + (b"\xAA" * 400) + (b"\x00" * 64) + PYINSTALLER_COOKIE + b"\x00\x00\x00\x30"
         
         # Apply ExtractorShield
         shielded_binary, meta = ExtractorShield.shield_binary_bytes(clean_binary)

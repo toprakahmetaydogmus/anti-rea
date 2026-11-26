@@ -22,7 +22,6 @@ License: MIT
 
 import os
 import struct
-import json
 from typing import Dict, Any, Optional, Tuple
 
 
@@ -66,6 +65,9 @@ class AsarShield:
 
         return shielded_data, {
             "shielded": True,
+            "original_u32_4": orig_u32_4,
+            "original_total_size": orig_total_size,
+            "original_header_size": orig_header_size,
             "original_json_len": orig_json_len,
             "poisoned_json_len": poisoned_json_len,
             "status": "ASAR_EXTRACTOR_POISONED"
@@ -97,3 +99,24 @@ class AsarShield:
             }
         except Exception as e:
             return {"success": False, "error": str(e)}
+
+    @classmethod
+    def protect_js_source(cls, js_source: str) -> str:
+        """Wraps JavaScript / Electron source with anti-debug, prototype freeze & integrity traps."""
+        guard = """/* SIBER AKADEMI ANTI-REA D11: ELECTRON / NODE JS GUARD */
+(function(_g){
+  try {
+    if (typeof process !== 'undefined' && process.execArgv && process.execArgv.some(function(a){ return a.indexOf('--inspect') === 0; })) {
+      process.exit(1);
+    }
+    var _t0 = Date.now();
+    if (typeof Object.freeze === 'function') {
+      try { Object.freeze(Object.prototype); } catch(_) {}
+    }
+    if ((Date.now() - _t0) > 2500 && typeof process !== 'undefined') {
+      process.exit(1);
+    }
+  } catch(_) {}
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+"""
+        return f"{guard}\n{js_source}"
