@@ -7,6 +7,7 @@
 
 [![Version: 5.0.0](https://img.shields.io/badge/version-5.0.0-10b981.svg)](pyproject.toml)
 [![Tiers: 180 Verified](https://img.shields.io/badge/Defense%20Matrix-180%20Tiers%20(12%20Domains)-06b6d4.svg)](anti_rea/tier_catalog.py)
+[![Product Hunt](https://img.shields.io/badge/Product%20Hunt-T--Zero%20Launch-DA552F?style=flat-square&logo=producthunt&logoColor=white)](https://www.producthunt.com/products/tzeroalgorithm?launch=tzeroalgorithm)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Zero-Leak Certified](https://img.shields.io/badge/Security-100%25%20Zero--Leak-success)](https://github.com/toprakahmetaydogmus/TZeroAlgorithm)
